@@ -51,7 +51,7 @@ export class QueryBuilder implements OnInit {
   ngOnInit(): void {
     this.api.getMetadata().subscribe({
       next: m => this.metadata.set(m),
-      error: () => this.error.set('שגיאה בטעינת המטא-דאטה. ודאי שהשרת רץ על פורט 5080.')
+      error: () => this.error.set('שגיאה בטעינת המטא-דאטה. יש לוודא שהשרת פועל על פורט 5080.')
     });
   }
 

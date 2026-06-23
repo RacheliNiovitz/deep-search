@@ -28,7 +28,7 @@ export class SavedQueries implements OnInit {
   load(): void {
     this.api.listSaved().subscribe({
       next: list => this.items.set(list),
-      error: () => this.error.set('שגיאה בטעינת הרשימה. ודאי שהשרת רץ.')
+      error: () => this.error.set('שגיאה בטעינת הרשימה. יש לוודא שהשרת פועל.')
     });
   }
 
