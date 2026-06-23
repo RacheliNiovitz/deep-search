@@ -1,4 +1,5 @@
 using DeepSearch.Core.Abstractions;
+using DeepSearch.Core.Entities;
 using DeepSearch.Core.Exceptions;
 using DeepSearch.Core.Queries;
 
@@ -29,10 +30,12 @@ public class QueryService : IQueryService
     {
         Validate(definition);
 
-        // נטען ערים/מגזרים/מחוזות כדי לבנות את המשפט הקריא בשמות אמיתיים
+        // נטען ערים/מגזרים/מחוזות (גם לניסוח הקריא וגם לוולידציית קיום המזהים)
         var cities = await _metadata.GetCitiesAsync(ct);
         var sectors = await _metadata.GetSectorsAsync(ct);
         var districts = await _metadata.GetDistrictsAsync(ct);
+
+        ValidateReferences(definition, cities, sectors, districts);
 
         var phrase = _phraseBuilder.Build(definition, cities, sectors, districts);
         var rows = await _population.ExecuteAggregationAsync(definition, ct);
@@ -64,5 +67,22 @@ public class QueryService : IQueryService
             throw new ValidationException($"שנת סיום חייבת להיות בין 1900 ל-{currentYear}.");
         if (f.YearFrom.HasValue && f.YearTo.HasValue && f.YearFrom > f.YearTo)
             throw new ValidationException("שנת ההתחלה לא יכולה להיות מאוחרת משנת הסיום.");
+    }
+
+    /// <summary>
+    /// מוודא שמזהי העיר/המחוז/המגזר בסינון אכן קיימים ב-DB,
+    /// כדי שלא נחזיר "0 תוצאות" שקט על מזהה שגוי (למשל cityId=999).
+    /// </summary>
+    private static void ValidateReferences(QueryDefinition def,
+        IReadOnlyList<City> cities, IReadOnlyList<Sector> sectors, IReadOnlyList<District> districts)
+    {
+        var f = def.Filters;
+
+        if (f.CityId is int c && cities.All(x => x.Id != c))
+            throw new ValidationException($"עיר עם מזהה {c} אינה קיימת.");
+        if (f.DistrictId is int d && districts.All(x => x.Id != d))
+            throw new ValidationException($"מחוז עם מזהה {d} אינו קיים.");
+        if (f.SectorId is int s && sectors.All(x => x.Id != s))
+            throw new ValidationException($"מגזר עם מזהה {s} אינו קיים.");
     }
 }

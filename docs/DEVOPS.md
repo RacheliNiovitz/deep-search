@@ -80,31 +80,33 @@ dotnet user-secrets set "Gemini:ApiKey" "<key>"
 
 ## 5. פריסה ל־GCP
 
+**הפריסה בפועל (זו שרצה):** שירות **Cloud Run יחיד** — ה־API של .NET מגיש גם את קבצי ה־Angular הסטטיים (מ־`wwwroot`, עם fallback ל־`index.html`). כך מתקבל **לינק אחד, ללא CORS**. ה־Dockerfile בשורש בונה את ה־Angular ומטמיע אותו ב־API.
+
 ```
-┌──────────────────┐     ┌──────────────────┐     ┌────────────────────┐
-│ Firebase Hosting │     │    Cloud Run     │     │  Cloud SQL (PG)    │
-│   (Angular SPA)  │────►│   (.NET API)     │────►│   נתונים + שמורות   │
-└──────────────────┘     └────────┬─────────┘     └────────────────────┘
-                                  │ קורא Secrets
-                                  ▼
-                         ┌──────────────────┐
-                         │  Secret Manager  │
-                         └──────────────────┘
+┌─────────────────────────────────┐     ┌────────────────────┐
+│        Cloud Run (יחיד)         │     │  Cloud SQL (PG)    │
+│  .NET API  +  Angular (wwwroot) │────►│   נתונים + שמורות   │
+└────────────────┬────────────────┘     └────────────────────┘
+                 │ קורא Secrets
+                 ▼
+        ┌──────────────────┐
+        │  Secret Manager  │
+        └──────────────────┘
 ```
 
 | רכיב | שירות GCP | הערה |
 |------|-----------|------|
-| Frontend (Angular) | **Firebase Hosting** | חינמי, CDN מובנה. build סטטי. |
-| API (.NET) | **Cloud Run** | קונטיינר, scale-to-zero, חיוב לפי שימוש. |
-| בסיס נתונים | **Cloud SQL for PostgreSQL** | מנוהל — גיבויים, אבטחה, עדכונים. |
+| API + Frontend | **Cloud Run** | שירות אחד; ה־API מגיש את ה־Angular. scale-to-zero, חיוב לפי שימוש. |
+| בסיס נתונים | **Cloud SQL for PostgreSQL** | מנוהל — גיבויים, אבטחה, עדכונים. (ב־PoC הנוכחי: SQLite ב־`/tmp`.) |
 | Secrets | **Secret Manager** | מפתח Gemini + connection string. |
 | חיבור API↔DB | **Cloud SQL Connector** | חיבור מאובטח בלי לחשוף את ה־DB לאינטרנט. |
 
-**שלבי פריסה:**
-1. יצירת instance של Cloud SQL והרצת `database/01_schema.sql` + `02_seed.sql`.
-2. בניית Docker image ל־API ופריסה ל־Cloud Run; הגדרת ה־connection string ו־`Database:Provider=Postgres` כ־env vars (מ־Secret Manager).
-3. `ng build` ופריסת התוצר ל־Firebase Hosting.
-4. עדכון `Cors:AllowedOrigins` בכתובת ה־Frontend.
+**שלבי פריסה (בפועל):**
+1. (לפרודקשן) יצירת instance של Cloud SQL והרצת `database/01_schema.sql` + `02_seed.sql`.
+2. `gcloud run deploy --source .` — Cloud Build בונה את ה־Dockerfile (Angular + API) ופורס.
+3. הגדרת env vars: `Gemini__ApiKey`, `Nlp__Provider`, ובפרודקשן גם connection string ו־`Database__Provider=Postgres` (מ־Secret Manager).
+
+> **הפרדה אופציונלית:** ניתן גם להפריד את ה־Frontend ל־**Firebase Hosting** (CDN ייעודי) ולהשאיר את ה־API לבד ב־Cloud Run — אז יש להגדיר `Cors:AllowedOrigins` לכתובת ה־Frontend. בחרנו בשירות אחד לפשטות ולחיסכון ב־CORS.
 
 > בזכות EF Core, המעבר ממקומי ל־GCP הוא בעיקר **החלפת connection string וספק** — הקוד עצמו אינו משתנה.
 

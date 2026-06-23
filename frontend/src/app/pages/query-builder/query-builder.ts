@@ -115,12 +115,28 @@ export class QueryBuilder implements OnInit {
     });
   }
 
-  save(): void {
-    const name = prompt('שם לשאילתה:');
+  // ----- מודל שמירת שאילתה (במקום window.prompt) -----
+  showSaveModal = signal(false);
+  saveName = '';
+
+  openSaveModal(): void {
+    if (!this.validateFields()) return;
+    this.saveName = '';
+    this.savedMsg.set(null);
+    this.error.set(null);
+    this.showSaveModal.set(true);
+  }
+
+  cancelSave(): void {
+    this.showSaveModal.set(false);
+  }
+
+  confirmSave(): void {
+    const name = this.saveName.trim();
     if (!name) return;
     this.api.saveQuery(name, this.buildDefinition()).subscribe({
-      next: () => this.savedMsg.set('✓ השאילתה נשמרה'),
-      error: e => this.error.set(e?.error?.error ?? 'שגיאה בשמירה')
+      next: () => { this.savedMsg.set('✓ השאילתה נשמרה'); this.showSaveModal.set(false); },
+      error: e => { this.error.set(e?.error?.error ?? 'שגיאה בשמירה'); this.showSaveModal.set(false); }
     });
   }
 }

@@ -94,7 +94,7 @@
 
     <div class="actions">
       <button class="primary" (click)="run()" [disabled]="loading()">הרץ שאילתה</button>
-      <button (click)="save()">שמור שאילתה</button>
+      <button (click)="openSaveModal()">שמור שאילתה</button>
       @if (savedMsg()) { <span class="ok">{{ savedMsg() }}</span> }
     </div>
   </div>
@@ -106,3 +106,20 @@
 @if (loading()) { <p class="loading">מחשב...</p> }
 
 <app-results-view [result]="result()" />
+
+<!-- מודל שמירת שאילתה -->
+@if (showSaveModal()) {
+  <div class="modal-backdrop" (click)="cancelSave()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <h3>שמירת שאילתה</h3>
+      <label>שם השאילתה
+        <input type="text" [(ngModel)]="saveName" placeholder="לדוגמה: שכר נשים בירושלים"
+               (keyup.enter)="confirmSave()" autofocus>
+      </label>
+      <div class="modal-actions">
+        <button class="primary" (click)="confirmSave()" [disabled]="!saveName.trim()">שמור</button>
+        <button (click)="cancelSave()">ביטול</button>
+      </div>
+    </div>
+  </div>
+}

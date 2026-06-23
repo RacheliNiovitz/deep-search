@@ -8,9 +8,15 @@
 -- טבלאות ממד (Metadata) - מזינות את התפריטים בבונה השאילתות
 -- ---------------------------------------------------------------------
 
-CREATE TABLE cities (
+CREATE TABLE districts (
     id   SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL UNIQUE
+);
+
+CREATE TABLE cities (
+    id          SERIAL PRIMARY KEY,
+    name        VARCHAR(100) NOT NULL UNIQUE,
+    district_id INT NOT NULL REFERENCES districts(id)   -- כל עיר משויכת למחוז
 );
 
 CREATE TABLE sectors (

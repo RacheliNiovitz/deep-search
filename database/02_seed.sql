@@ -4,8 +4,19 @@
 --  (ממוצע / סכום / כמות) יהיו משמעותיות.
 -- =====================================================================
 
--- ערים ומגזרים (טבלאות הממד)
-INSERT INTO cities (name)  VALUES ('ירושלים'), ('תל אביב'), ('חיפה'), ('באר שבע');
+-- מחוזות (טבלת ממד עליונה)
+INSERT INTO districts (name) VALUES ('ירושלים'), ('תל אביב'), ('חיפה'), ('הדרום'), ('המרכז'), ('הצפון');
+
+-- ערים (2 לכל מחוז) - district_id מתייחס לסדר ההכנסה של המחוזות למעלה
+INSERT INTO cities (name, district_id) VALUES
+    ('ירושלים', 1), ('בית שמש', 1),
+    ('תל אביב', 2), ('בני ברק', 2),
+    ('חיפה', 3),    ('חדרה', 3),
+    ('באר שבע', 4), ('אשדוד', 4),
+    ('פתח תקווה', 5), ('רחובות', 5),
+    ('נצרת', 6),    ('עכו', 6);
+
+-- מגזרים
 INSERT INTO sectors (name) VALUES ('כללי'), ('חרדי'), ('ערבי');
 
 -- ---------------------------------------------------------------------
@@ -17,7 +28,7 @@ INSERT INTO population_records (gender, age, city_id, sector_id, year, monthly_i
 SELECT
     CASE WHEN random() < 0.5 THEN 'male' ELSE 'female' END,   -- מגדר
     20 + floor(random() * 45)::int,                           -- גיל 20..64
-    1  + floor(random() * 4)::int,                            -- city_id 1..4
+    1  + floor(random() * 12)::int,                           -- city_id 1..12
     1  + floor(random() * 3)::int,                            -- sector_id 1..3
     2020 + floor(random() * 5)::int,                          -- שנה 2020..2024
     round((4000 + random() * 16000)::numeric, 2),             -- שכר 4000..20000

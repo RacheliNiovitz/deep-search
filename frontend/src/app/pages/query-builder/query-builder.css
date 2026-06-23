@@ -54,3 +54,18 @@ button:disabled { opacity: .6; cursor: not-allowed; }
 
 .error { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; padding: 12px 16px; border-radius: 8px; margin: 12px 0; }
 .loading { color: #64748b; }
+
+/* מודל שמירת שאילתה */
+.modal-backdrop {
+  position: fixed; inset: 0; background: rgba(15, 23, 42, .45);
+  display: flex; align-items: center; justify-content: center; z-index: 50;
+}
+.modal {
+  background: #fff; border-radius: 12px; padding: 24px; width: 380px; max-width: 90vw;
+  box-shadow: 0 10px 40px rgba(0,0,0,.2);
+}
+.modal h3 { margin: 0 0 16px; color: #1e293b; }
+.modal label { display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: #475569; font-weight: 600; }
+.modal input { padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; font-family: inherit; }
+.modal input:focus { outline: none; border-color: #4f86f7; box-shadow: 0 0 0 3px rgba(79,134,247,.15); }
+.modal-actions { display: flex; gap: 10px; margin-top: 20px; }
