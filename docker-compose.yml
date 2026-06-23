@@ -1,0 +1,23 @@
+# =====================================================================
+#  Deep Search - PostgreSQL מקומי לפיתוח
+#  הרצה:  docker compose up -d
+#  כיבוי: docker compose down   (להוספת -v כדי למחוק גם את הנתונים)
+# =====================================================================
+services:
+  db:
+    image: postgres:16
+    container_name: deepsearch-db
+    environment:
+      POSTGRES_USER: deepsearch
+      POSTGRES_PASSWORD: devpassword
+      POSTGRES_DB: deepsearch
+    ports:
+      - "5432:5432"
+    volumes:
+      # קבצי ה-SQL רצים אוטומטית, לפי סדר אלפביתי, באתחול הראשון בלבד
+      - ./database:/docker-entrypoint-initdb.d
+      # שמירת הנתונים בין הפעלות
+      - deepsearch-data:/var/lib/postgresql/data
+
+volumes:
+  deepsearch-data:

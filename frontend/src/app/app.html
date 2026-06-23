@@ -1,0 +1,12 @@
+<header class="topbar">
+  <div class="brand">🔎 Deep Search <span>· הלמ"ס</span></div>
+  <nav>
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">בונה שאילתות</a>
+    <a routerLink="/nl" routerLinkActive="active">שאלה חופשית (AI)</a>
+    <a routerLink="/saved" routerLinkActive="active">שאילתות שמורות</a>
+  </nav>
+</header>
+
+<main class="container">
+  <router-outlet />
+</main>

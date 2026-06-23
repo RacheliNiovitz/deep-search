@@ -1,0 +1,108 @@
+<h2>בונה שאילתות</h2>
+<p class="sub">בחרי פרמטרים — והמערכת תנסח את השאלה, תחשב ותציג טבלה וגרף.</p>
+
+@if (metadata(); as meta) {
+  <div class="form-card">
+    <div class="grid">
+      <label>מדד
+        <select [(ngModel)]="metric">
+          @for (m of meta.metrics; track m.value) { <option [value]="m.value">{{ m.label }}</option> }
+        </select>
+      </label>
+
+      <label>מגדר
+        <select [(ngModel)]="gender">
+          <option value="">הכל</option>
+          @for (g of meta.genders; track g.value) { <option [value]="g.value">{{ g.label }}</option> }
+        </select>
+      </label>
+
+      <label>עיר
+        <select [(ngModel)]="cityId">
+          <option value="">הכל</option>
+          @for (c of meta.cities; track c.value) { <option [value]="c.value">{{ c.label }}</option> }
+        </select>
+      </label>
+
+      <label>מחוז
+        <select [(ngModel)]="districtId">
+          <option value="">הכל</option>
+          @for (d of meta.districts; track d.value) { <option [value]="d.value">{{ d.label }}</option> }
+        </select>
+      </label>
+
+      <label>מגזר
+        <select [(ngModel)]="sectorId">
+          <option value="">הכל</option>
+          @for (s of meta.sectors; track s.value) { <option [value]="s.value">{{ s.label }}</option> }
+        </select>
+      </label>
+
+      <label>גיל מ־
+        <input type="number" [(ngModel)]="ageMin" min="0" max="120" placeholder="25"
+               (blur)="validateFields()" [class.invalid]="fieldErrors()['ageMin']">
+        @if (fieldErrors()['ageMin']) { <small class="field-err">{{ fieldErrors()['ageMin'] }}</small> }
+      </label>
+      <label>גיל עד
+        <input type="number" [(ngModel)]="ageMax" min="0" max="120" placeholder="35"
+               (blur)="validateFields()" [class.invalid]="fieldErrors()['ageMax']">
+        @if (fieldErrors()['ageMax']) { <small class="field-err">{{ fieldErrors()['ageMax'] }}</small> }
+      </label>
+
+    </div>
+
+    <div class="years">
+      <span class="years-title">תקופת זמן</span>
+
+      <div class="year-mode">
+        <label><input type="radio" name="ymode" value="single" [(ngModel)]="yearMode"> שנה בודדת</label>
+        <label><input type="radio" name="ymode" value="range" [(ngModel)]="yearMode"> טווח שנים</label>
+      </div>
+
+      <div class="year-fields">
+        @if (yearMode === 'single') {
+          <label>שנה
+            <input type="number" [(ngModel)]="singleYear" min="1900" max="2100" placeholder="2023"
+                   (blur)="validateFields()" [class.invalid]="fieldErrors()['singleYear']">
+            @if (fieldErrors()['singleYear']) { <small class="field-err">{{ fieldErrors()['singleYear'] }}</small> }
+          </label>
+        } @else {
+          <label>משנה
+            <input type="number" [(ngModel)]="yearFrom" min="1900" max="2100" placeholder="2021"
+                   (blur)="validateFields()" [class.invalid]="fieldErrors()['yearFrom']">
+            @if (fieldErrors()['yearFrom']) { <small class="field-err">{{ fieldErrors()['yearFrom'] }}</small> }
+          </label>
+          <label>עד שנה
+            <input type="number" [(ngModel)]="yearTo" min="1900" max="2100" placeholder="2024"
+                   (blur)="validateFields()" [class.invalid]="fieldErrors()['yearTo']">
+            @if (fieldErrors()['yearTo']) { <small class="field-err">{{ fieldErrors()['yearTo'] }}</small> }
+          </label>
+        }
+      </div>
+    </div>
+
+    <div class="groupby">
+      <span>פילוח לפי:</span>
+      @for (g of meta.groupByFields; track g.value) {
+        <label>
+          <input type="checkbox" [checked]="selectedGroupBy.includes(g.value)"
+                 (change)="toggleGroupBy(g.value, $any($event.target).checked)">
+          {{ g.label }}
+        </label>
+      }
+    </div>
+
+    <div class="actions">
+      <button class="primary" (click)="run()" [disabled]="loading()">הרץ שאילתה</button>
+      <button (click)="save()">שמור שאילתה</button>
+      @if (savedMsg()) { <span class="ok">{{ savedMsg() }}</span> }
+    </div>
+  </div>
+} @else {
+  <p>טוען מטא-דאטה...</p>
+}
+
+@if (error()) { <div class="error">{{ error() }}</div> }
+@if (loading()) { <p class="loading">מחשב...</p> }
+
+<app-results-view [result]="result()" />

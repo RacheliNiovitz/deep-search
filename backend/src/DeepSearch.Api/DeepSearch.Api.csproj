@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>57d5a362-9e44-41fe-85dc-02bc1ae0b92d</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DeepSearch.Core\DeepSearch.Core.csproj" />
+    <ProjectReference Include="..\DeepSearch.Infrastructure\DeepSearch.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

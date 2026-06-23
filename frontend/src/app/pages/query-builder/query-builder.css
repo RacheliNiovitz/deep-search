@@ -1,0 +1,56 @@
+:host { display: block; }
+
+h2 { margin: 0 0 4px; color: #1e293b; }
+.sub { color: #64748b; margin: 0 0 18px; }
+
+.form-card {
+  background: #fff; border: 1px solid #e2e8f0; border-radius: 12px;
+  padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,.05); margin-bottom: 20px;
+}
+
+.grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+}
+@media (max-width: 760px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+
+label { display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: #475569; font-weight: 600; }
+
+select, input[type="number"] {
+  padding: 9px 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px;
+  font-family: inherit; background: #fff;
+}
+select:focus, input:focus { outline: none; border-color: #4f86f7; box-shadow: 0 0 0 3px rgba(79,134,247,.15); }
+
+input.invalid { border-color: #ef4444; }
+input.invalid:focus { box-shadow: 0 0 0 3px rgba(239,68,68,.15); }
+.field-err { color: #dc2626; font-size: 12px; font-weight: 500; }
+
+.years {
+  margin-top: 18px; padding-top: 16px; border-top: 1px dashed #e2e8f0;
+}
+.years-title { display: block; font-weight: 700; color: #334155; margin-bottom: 10px; }
+.year-mode { display: flex; gap: 22px; margin-bottom: 14px; }
+.year-mode label { flex-direction: row; align-items: center; gap: 6px; font-weight: 500; cursor: pointer; }
+.year-fields { display: flex; gap: 16px; }
+.year-fields label { min-width: 120px; }
+
+.groupby {
+  display: flex; align-items: center; gap: 18px; margin-top: 18px;
+  padding-top: 16px; border-top: 1px dashed #e2e8f0;
+}
+.groupby > span { font-weight: 700; color: #334155; }
+.groupby label { flex-direction: row; align-items: center; gap: 6px; font-weight: 500; }
+
+.actions { display: flex; align-items: center; gap: 12px; margin-top: 18px; }
+button {
+  padding: 10px 20px; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff;
+  cursor: pointer; font-size: 14px; font-weight: 600; font-family: inherit; transition: .15s;
+}
+button:hover { background: #f8fafc; }
+button.primary { background: #2b5fd0; color: #fff; border-color: #2b5fd0; }
+button.primary:hover { background: #2350b5; }
+button:disabled { opacity: .6; cursor: not-allowed; }
+.ok { color: #16a34a; font-weight: 600; }
+
+.error { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; padding: 12px 16px; border-radius: 8px; margin: 12px 0; }
+.loading { color: #64748b; }

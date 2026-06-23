@@ -1,0 +1,24 @@
+<h2>שאילתות שמורות</h2>
+<p class="sub">רשימת השאילתות ששמרת. לחצי "הרץ" כדי לחשב אותן מחדש על הנתונים העדכניים.</p>
+
+@if (error()) { <div class="error">{{ error() }}</div> }
+
+@if (items().length) {
+  <ul class="list">
+    @for (item of items(); track item.id) {
+      <li>
+        <div class="info">
+          <span class="name">{{ item.name }}</span>
+          <span class="date">{{ item.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+        </div>
+        <button class="primary" (click)="run(item)" [disabled]="runningId() === item.id">
+          {{ runningId() === item.id ? 'מריץ...' : 'הרץ' }}
+        </button>
+      </li>
+    }
+  </ul>
+} @else {
+  <p class="empty">אין עדיין שאילתות שמורות. עברי ל"בונה שאילתות" ושמרי אחת.</p>
+}
+
+<app-results-view [result]="result()" />

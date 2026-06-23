@@ -1,0 +1,11 @@
+# מונע העלאת קבצים כבדים/מיותרים ל-Cloud Build
+**/node_modules
+**/bin
+**/obj
+**/dist
+**/.angular
+**/.vs
+**/*.db
+**/*.db-shm
+**/*.db-wal
+backend/Dockerfile

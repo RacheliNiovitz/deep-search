@@ -1,0 +1,52 @@
+<h2>שאלה חופשית (AI)</h2>
+<p class="sub">כתבי שאלה בשפה חופשית. ביציאה מהשדה תקבלי חיווי כיצד המערכת הבינה אותה.</p>
+
+<div class="note">
+  🤖 הפירוש מתבצע ע"י <strong>LLM אמיתי (Google Gemini)</strong>. אם השירות אינו זמין,
+  המערכת עוברת אוטומטית לפרסר מבוסס חוקים — כך שתמיד מתקבלת תשובה.
+</div>
+
+<div class="form-card">
+  <textarea [(ngModel)]="question" rows="3" (blur)="onBlur()"
+            placeholder="לדוגמה: מהו השכר הממוצע של נשים בירושלים בשנים 2021-2024"></textarea>
+
+  <div class="examples">
+    <span>דוגמאות:</span>
+    @for (ex of examples; track ex) {
+      <button class="chip" (click)="useExample(ex)">{{ ex }}</button>
+    }
+  </div>
+
+  <button class="primary" (click)="run()" [disabled]="loading()">הרץ שאילתה</button>
+</div>
+
+@if (loading()) { <p class="loading">מעבד...</p> }
+@if (error()) { <div class="error">{{ error() }}</div> }
+
+@if (parsed(); as p) {
+  <div class="interp" [class.ok]="status() === 'ok'" [class.partial]="status() === 'partial'" [class.bad]="status() === 'bad'">
+    <div class="status">
+      <span class="indicator" [class.ok]="status() === 'ok'" [class.partial]="status() === 'partial'" [class.bad]="status() === 'bad'">
+        @switch (status()) {
+          @case ('ok')      { ✓ }
+          @case ('partial') { ? }
+          @case ('bad')     { ✕ }
+        }
+      </span>
+      <div class="status-text">
+        <strong>
+          @switch (status()) {
+            @case ('ok')      { השאלה הובנה }
+            @case ('partial') { השאלה הובנה חלקית }
+            @case ('bad')     { לא הצלחתי להבין את השאלה }
+          }
+        </strong>
+        <div class="phrase">{{ p.interpretation }}</div>
+      </div>
+    </div>
+
+    @for (w of p.warnings; track w) { <div class="warnline">⚠ {{ w }}</div> }
+  </div>
+}
+
+<app-results-view [result]="result()" />

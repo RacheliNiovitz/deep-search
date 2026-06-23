@@ -1,0 +1,6 @@
+@DeepSearch.Api_HostAddress = http://localhost:5199
+
+GET {{DeepSearch.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

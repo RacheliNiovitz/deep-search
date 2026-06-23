@@ -1,0 +1,11 @@
+/* עיצוב גלובלי */
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  direction: rtl;                /* כיווניות עברית */
+  background: #f1f5f9;
+  color: #1e293b;
+  font-family: "Segoe UI", "Assistant", "Heebo", Arial, sans-serif;
+}

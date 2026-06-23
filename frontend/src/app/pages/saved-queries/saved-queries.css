@@ -1,0 +1,23 @@
+:host { display: block; }
+
+h2 { margin: 0 0 4px; color: #1e293b; }
+.sub { color: #64748b; margin: 0 0 18px; }
+
+.list { list-style: none; padding: 0; margin: 0 0 20px; display: flex; flex-direction: column; gap: 10px; }
+.list li {
+  display: flex; align-items: center; justify-content: space-between;
+  background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 18px;
+}
+.info { display: flex; flex-direction: column; gap: 4px; }
+.name { font-weight: 700; color: #1e293b; }
+.date { font-size: 12px; color: #94a3b8; }
+
+button.primary {
+  padding: 9px 22px; border: 1px solid #2b5fd0; border-radius: 8px; background: #2b5fd0;
+  color: #fff; cursor: pointer; font-size: 14px; font-weight: 600; font-family: inherit;
+}
+button.primary:hover { background: #2350b5; }
+button:disabled { opacity: .6; cursor: not-allowed; }
+
+.empty { color: #94a3b8; }
+.error { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; padding: 12px 16px; border-radius: 8px; margin: 12px 0; }

@@ -1,0 +1,27 @@
+# ---------- .NET ----------
+bin/
+obj/
+*.user
+# קובץ SQLite המקומי (נוצר אוטומטית בהרצה)
+*.db
+*.db-shm
+*.db-wal
+
+# ---------- Node / Angular ----------
+node_modules/
+dist/
+.angular/
+
+# ---------- Secrets ----------
+# user-secrets נשמרים מחוץ לעץ הפרויקט; כאן רק ליתר ביטחון
+appsettings.*.Local.json
+*.env
+
+# ---------- IDE ----------
+.vs/
+.vscode/
+.idea/
+
+# ---------- מערכת הפעלה ----------
+Thumbs.db
+.DS_Store
