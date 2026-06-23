@@ -1,0 +1,11 @@
+# נרמול סיומות שורה - מונע אזהרות LF/CRLF ושומר על עקביות בין מערכות הפעלה
+* text=auto
+
+# קבצים בינאריים (לא לנרמל)
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.ico  binary
+*.docx binary
+*.pdf  binary
